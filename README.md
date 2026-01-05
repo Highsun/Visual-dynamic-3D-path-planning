@@ -1,27 +1,27 @@
-# Visual-dynamic-3D-path-planning
+# Visual-Dynamic-3D-Path-Planning
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.12.2](https://img.shields.io/badge/python-3.12.2-blue.svg)](https://www.python.org/downloads/)
 [![Platform: macOS](https://img.shields.io/badge/platform-macOS-lightgrey.svg)](https://github.com/)
 
-> **电子科技大学本科毕业设计** > 基于动态信息域的三维空间最优路径规划算法——以《三角洲行动》中“麦晓雯”技能模型为例
+> **Undergraduate Graduation Thesis | UESTC** > Optimal Path Planning in 3D Space Based on Dynamic Information Fields: A Case Study of Mai Xiaowen's Ability Model in _Delta Force_
 
-## 介绍
+## Introduction
 
-这是一个电子科技大学数学专业的本科毕业设计课题。本项目旨在研究三维动态环境下的高效寻路问题。受国产 FPS 游戏《三角洲行动》中信息位角色“麦晓雯”大招探测技能的启发，本项目构建了一个**动态信息域**模型。
+This project is an undergraduate graduation thesis from the **School of Mathematical Sciences, University of Electronic Science and Technology of China (UESTC)**. The research focuses on efficient pathfinding in 3D dynamic environments.
 
-通过改进 A\* 算法，结合**增量式搜索**与**时变加权图**，实现在复杂 3D 体素空间中，根据实时扫描信息动态优化从移动源到目标的指引路径。
+Inspired by the tactical detection ultimate of the character "Mai Xiaowen" in the FPS game _Delta Force_, this project constructs a **Dynamic Information Field (DIF)** model. By enhancing the **A\* algorithm** with **incremental search** and **time-varying weighted graphs**, the system achieves real-time path optimization from a moving source to a target within a complex 3D voxel space based on live scanning data.
 
-### 核心特性
+## Key Features
 
-- **3D 体素模型**: 基于体素网格的高性能三维空间建模。
-- **动态信息域**: 110° 扇形锥面动态扫描体，模拟实时探测机制。
-- **优化路径规划**: 针对质点模型设计的 Any-Angle 寻路优化，生成顺滑的玩家指引线。
-- **高性能实时渲染**: 实现 3D 实时仿真与可视化。
+- **3D Voxel Modeling**: High-performance spatial representation using 3D voxel grids.
+- **Dynamic Information Field**: A 110° sector-cone dynamic scanning volume simulating real-time detection mechanisms.
+- **Optimized Path Planning**: Implementation of Any-Angle pathfinding (e.g., Theta\*) designed for point-mass models to generate smooth tactical guidance lines.
+- **Real-time Simulation**: High-performance 3D visualization and algorithmic feedback loop.
 
 ---
 
-## 项目结构（更新中）
+## Project Structure (In Progress)
 
 ```text
 ├── README.md
@@ -31,24 +31,17 @@
         └── voxel_env.py
 ```
 
----
+## Getting Started (Planned)
 
-## 快速开始（计划中）
+Instructional content for environment setup and running the simulation will be updated soon.
 
----
+## License
 
-## 研究计划（计划中）
+This project is licensed under the [MIT LICENSE](./LICENSE).
 
----
-
-## 许可证
-
-本项目遵循 [MIT LICENSE](./LICENSE) 。
-
----
-
-## 联系方式
+## Contact
 
 - **Author**: Gaoyang FENG
 - **Institution**: University of Electronic Science and Technology of China (UESTC)
+- **Department**: School of Mathematical Sciences
 - **Email**: highsun910@gmail.com
