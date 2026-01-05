@@ -32,7 +32,7 @@ class VoxelEnvironment:
         num_steps = int(height / step_h)
         for i in range(num_steps):
             step_pos = [start_xyz[0], start_xyz[1] + i * 0.5, start_xyz[2] + i * step_h]
-            self.add_block(step_pos, [size_xyz[0], size_xyz[1], step_h], state=4)
+            self.add_block(step_pos, [size_xyz[0], size_xyz[1], step_h], state=5)
 
     def create_custom_scene(self):
         # 1. 基础大基座地面 (厚度1m)
@@ -67,12 +67,125 @@ class VoxelEnvironment:
         self.add_block([east_x+east_w-1, base_y, 0], [1, east_d, total_h], state=3)
         self.add_block([east_x, base_y, 6], [east_w, east_d, 1], state=4)            # 2F地板 (抬高到6m)
 
-        # --- 二楼双连廊 (高度同步抬升到 6m) ---
-        bridge_w = 2
-        for y_pos in [top_y - 10, top_y - 10 - 16 - bridge_w]:
-            self.add_block([base_x+west_w, y_pos, 6], [gap, bridge_w, 1], state=4)   # 连廊地板
-            self.add_block([base_x+west_w, y_pos, 7], [gap, 1, 2], state=3)          # 护栏北
-            self.add_block([base_x+west_w, y_pos+bridge_w-1, 7], [gap, 1, 2], state=3)# 护栏南
+        # --- 二楼双连廊 ---
+        bridge_inner_w = 2  # 内部净宽 2m
+        wall_thickness = 1  # 墙体厚度
+
+        for y_pos in [top_y - 10, top_y - 10 - 16 - bridge_inner_w]:
+            # 1. 连廊地板
+            bridge_y_start = y_pos - wall_thickness
+            bridge_total_w = bridge_inner_w + 2 * wall_thickness
+            
+            self.add_block([base_x+west_w, bridge_y_start, 6], [gap, bridge_total_w, 1], state=4)   
+            
+            # 2. 护栏
+            self.add_block([base_x+west_w, bridge_y_start, 7], [gap, 1, 2], state=3)          # 护栏北
+            self.add_block([base_x+west_w, bridge_y_start + bridge_total_w - 1, 7], [gap, 1, 2], state=3) # 护栏南
+
+            # 3. 打通东西楼连接处的墙壁
+            # 西楼出口开孔
+            self.add_block([base_x + west_w - 1, y_pos, 7], [1, bridge_inner_w, 4], state=1) 
+            # 东楼入口开孔
+            self.add_block([east_x, y_pos, 7], [1, bridge_inner_w, 4], state=1)
+
+        # --- 楼梯 (连接1F和2F) ---
+        # 西楼红房下楼梯
+        self.add_stairs([base_x + 1, w_y_start + 20, 1], [4, 7, 0.5], 5.0) 
+        # 西楼服务器室 2 右楼梯
+        self.add_stairs([base_x + 45, w_y_start + 29, 1], [4, 1, 0.5], 5.0)
+        # 东楼左会议室左楼梯
+        self.add_stairs([east_x + 1, base_y + 9, 1], [4, 4, 0.5], 5.0)
+        # 东楼右会议室右楼梯
+        self.add_stairs([east_x + 31, base_y + 9, 1], [4, 4, 0.5], 5.0)
+
+        # --- 2F 地板开孔 ---
+        # 西楼红房下楼梯口
+        self.add_block([base_x + 1, w_y_start + 20, 6], [4, 8, 1], state=1) 
+        # 西楼服务器室 2 右楼梯口
+        self.add_block([base_x + 45, w_y_start + 28, 6], [4, 6, 1], state=1)
+        # 东楼左会议室左楼梯口
+        self.add_block([east_x + 1, base_y + 9, 6], [4, 8, 1], state=1)
+        # 东楼右会议室右楼梯口
+        self.add_block([east_x + 31, base_y + 9, 6], [4, 8, 1], state=1)
+
+        # --- 1F 内部 ---
+        # -- 西楼 --
+        # 服务器 1
+        self.add_block([base_x+10, w_y_start+10, 1], [3, 1, 5], state=2)  # 内墙
+        self.add_block([base_x+23, w_y_start+10, 1], [3, 1, 5], state=2)  # 内墙
+        self.add_block([base_x+10, w_y_start+1, 1], [1, 4, 5], state=2)  # 内墙
+        self.add_block([base_x+10, w_y_start+7, 1], [1, 4, 5], state=2)  # 内墙
+        self.add_block([base_x+25, w_y_start+1, 1], [1, 9, 5], state=2)  # 内墙
+        # 工作台
+        self.add_block([base_x+35, w_y_start+1, 1], [1, 9, 5], state=2)  # 内墙
+        self.add_block([base_x+35, w_y_start+10, 1], [3, 1, 5], state=2)  # 内墙
+        self.add_block([base_x+44, w_y_start+1, 1], [1, 8, 5], state=2)  # 内墙
+        # 武器室
+        self.add_block([base_x+49, w_y_start+8, 1], [10, 1, 5], state=2)  # 内墙
+        # 服务器 2
+        self.add_block([base_x+49, w_y_start+15, 1], [1, 20, 5], state=2)  # 内墙
+        self.add_block([base_x+50, w_y_start+26, 1], [9, 1, 5], state=2)  # 内墙
+        self.add_block([base_x+53, w_y_start+15, 1], [6, 1, 5], state=2)  # 内墙
+        self.add_block([base_x+45, w_y_start+34, 1], [5, 1, 5], state=2)  # 楼梯间（下）
+        # 红房
+        self.add_block([base_x+1, w_y_start+31, 1], [5, 1, 5], state=2)  # 内墙
+        self.add_block([base_x+8, w_y_start+31, 1], [1, 8, 5], state=2)  # 内墙
+        self.add_block([base_x+5, w_y_start+18, 1], [1, 13, 5], state=2)  # 楼梯间（左）
+        # 健身房
+        self.add_block([base_x+23, w_y_start+31, 1], [1, 8, 5], state=2)  # 内墙
+        self.add_block([base_x+30, w_y_start+31, 1], [1, 1, 5], state=2)  # 内墙
+        self.add_block([base_x+37, w_y_start+31, 1], [1, 8, 5], state=2)  # 内墙
+        self.add_block([base_x+23, w_y_start+23, 1], [15, 1, 5], state=2)  # 隔板
+        # 任务房
+        self.add_block([base_x+44, w_y_start+29, 1], [1, 10, 5], state=2)  # 内墙
+        self.add_block([base_x+41, w_y_start+31, 1], [3, 1, 5], state=2)  # 内墙
+
+        # -- 东楼 --
+        # 会议室
+        self.add_block([east_x+5, base_y+9, 1], [1, 15, 5], state=2)  # 内墙 + 楼梯间（左）
+        self.add_block([east_x+15, base_y+9, 1], [1, 6, 5], state=2)  # 内墙
+        self.add_block([east_x+15, base_y+18, 1], [1, 6, 5], state=2)  # 内墙
+        self.add_block([east_x+20, base_y+9, 1], [1, 6, 5], state=2)  # 内墙
+        self.add_block([east_x+20, base_y+18, 1], [1, 6, 5], state=2)  # 内墙
+        self.add_block([east_x+30, base_y+9, 1], [1, 15, 5], state=2)  # 内墙 + 楼梯间（右）
+
+        self.add_block([east_x+5, base_y+9, 1], [4, 1, 5], state=2)  # 内墙
+        self.add_block([east_x+12, base_y+9, 1], [4, 1, 5], state=2)  # 内墙
+        self.add_block([east_x+20, base_y+9, 1], [4, 1, 5], state=2)  # 内墙
+        self.add_block([east_x+27, base_y+9, 1], [4, 1, 5], state=2)  # 内墙
+
+        self.add_block([east_x+1, base_y+24, 1], [15, 1, 5], state=2)  # 内墙
+        self.add_block([east_x+20, base_y+24, 1], [11, 1, 5], state=2)  # 内墙
+
+        self.add_block([east_x+1, base_y+17, 1], [4, 1, 5], state=2)  # 楼梯间
+        self.add_block([east_x+31, base_y+17, 1], [4, 1, 5], state=2)  # 楼梯间
+
+        # 办公区
+        self.add_block([east_x+5, base_y+25, 1], [1, 4, 5], state=2)  # 内墙
+        self.add_block([east_x+5, base_y+32, 1], [1, 4, 5], state=2)  # 内墙
+        self.add_block([east_x+15, base_y+25, 1], [1, 11, 5], state=2)  # 内墙
+        self.add_block([east_x+5, base_y+36, 1], [11, 1, 5], state=2)  # 内墙
+
+        # 厕所
+        self.add_block([east_x+1, base_y+40, 1], [6, 1, 5], state=2)  # 内墙
+        self.add_block([east_x+7, base_y+40, 1], [1, 10, 5], state=2)  # 内墙
+        self.add_block([east_x+7, base_y+52, 1], [1, 3, 5], state=2)  # 内墙
+
+        # 资料室
+        self.add_block([east_x+15, base_y+45, 1], [5, 1, 5], state=2)  # 内墙
+        self.add_block([east_x+23, base_y+45, 1], [2, 1, 5], state=2)  # 内墙
+        self.add_block([east_x+14, base_y+45, 1], [1, 10, 5], state=2)  # 内墙
+
+        # 设备室 + 设备领用室
+        self.add_block([east_x+26, base_y+48, 1], [9, 1, 5], state=2)  # 内墙
+        self.add_block([east_x+25, base_y+42, 1], [1, 7, 5], state=2)  # 内墙
+        self.add_block([east_x+25, base_y+27, 1], [1, 12, 5], state=2)  # 内墙
+        self.add_block([east_x+29, base_y+37, 1], [6, 1, 5], state=2)  # 内墙
+        self.add_block([east_x+26, base_y+29, 1], [9, 1, 5], state=2)  # 内墙
+
+        # --- 2F 内部 ---
+        # -- 西楼 --
+        # TODO: 修二楼
 
     def visualize(self):
         import time
@@ -120,6 +233,8 @@ class VoxelEnvironment:
                 color = [0.6, 0.4, 0.2]    # 内墙：棕色
             elif state == 4: 
                 color = [0.75, 0.75, 0.75] # 地板/天花板：浅灰
+            elif state == 5:
+                color = [0.6, 0.2, 0.8]    # 楼梯：蓝色
             else: 
                 color = [1.0, 1.0, 1.0]
                 
@@ -141,7 +256,7 @@ class VoxelEnvironment:
 
         process_time = time.time() - start_time
         vis = o3d.visualization.Visualizer()
-        vis.create_window(window_name="3D Voxel Scene - Logic Fixed", width=2560, height=1440)
+        vis.create_window(window_name="3D Voxel Scene - WQHD", width=2560, height=1440)
         vis.add_geometry(v_grid); vis.add_geometry(s_node); vis.add_geometry(g_node)
         vis.add_geometry(o3d.geometry.TriangleMesh.create_coordinate_frame(size=10.0))
         
