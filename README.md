@@ -24,11 +24,12 @@ Inspired by the tactical detection ultimate of the character "Mai Xiaowen" in th
 ## Project Structure (In Progress)
 
 ```text
+├── LICENSE
 ├── README.md
 ├── requirements.txt
 └── src
-    └── env
-        └── voxel_env.py
+    └── modeling
+        └── 3d_voxel.py
 ```
 
 ## Getting Started (Planned)
