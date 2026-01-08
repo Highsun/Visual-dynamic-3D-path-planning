@@ -271,7 +271,42 @@ class VoxelEnvironment:
         self.add_block([base_x+53, w_y_start+28, 6], [6, 1, 5], state=2)  # 内墙
 
         # -- 东楼 --
-        # TODO: 修房子
+        # 免保房
+        self.add_block([east_x+6, base_y+50, 6], [4, 1, 5], state=2)  # 内墙
+        self.add_block([east_x+13, base_y+50, 6], [4, 1, 5], state=2)  # 内墙
+        self.add_block([east_x+6, base_y+36, 6], [1, 3, 5], state=2)  # 内墙
+        self.add_block([east_x+6, base_y+44, 6], [1, 6, 5], state=2)  # 内墙
+        self.add_block([east_x+6, base_y+35, 6], [4, 1, 5], state=2)  # 内墙
+        self.add_block([east_x+13, base_y+35, 6], [4, 1, 5], state=2)  # 内墙
+        self.add_block([east_x+16, base_y+36, 6], [1, 14, 5], state=2)  # 内墙
+
+        # 暗房
+        self.add_block([east_x+20, base_y+36, 6], [1, 14, 5], state=2)  # 内墙
+        self.add_block([east_x+20, base_y+50, 6], [4, 1, 5], state=2)  # 内墙
+        self.add_block([east_x+27, base_y+50, 6], [4, 1, 5], state=2)  # 内墙
+        self.add_block([east_x+20, base_y+35, 6], [11, 1, 5], state=2)  # 内墙
+        self.add_block([east_x+30, base_y+36, 6], [1, 14, 5], state=2)  # 内墙
+
+        # 东楼经理室
+        self.add_block([east_x+10, base_y+28, 6], [2, 1, 5], state=2)  # 内墙
+        self.add_block([east_x+10, base_y+18, 6], [2, 1, 5], state=2)  # 内墙
+        self.add_block([east_x+14, base_y+18, 6], [13, 1, 5], state=2)  # 内墙
+        self.add_block([east_x+18, base_y+21, 6], [1, 7, 5], state=2)  # 内墙
+        self.add_block([east_x+14, base_y+28, 6], [13, 1, 5], state=2)  # 内墙
+        self.add_block([east_x+10, base_y+10, 6], [1, 18, 5], state=2)  # 内墙
+        self.add_block([east_x+26, base_y+10, 6], [1, 18, 5], state=2)  # 内墙
+        self.add_block([east_x+10, base_y+9, 6], [17, 1, 5], state=2)  # 内墙
+
+        # 楼梯间 + 阳台
+        self.add_block([east_x+30, base_y+8, 6], [5, 1, 5], state=2)  # 内墙
+        self.add_block([east_x+26, base_y+8, 6], [2, 1, 5], state=2)  # 内墙
+        self.add_block([east_x+1, base_y+8, 6], [5, 1, 5], state=2)  # 内墙
+        self.add_block([east_x+9, base_y+8, 6], [2, 1, 5], state=2)  # 内墙
+
+        self.add_block([east_x+30, base_y+9, 6], [1, 9.5, 5], state=2)  # 内墙
+        self.add_block([east_x+29, base_y+17.5, 6], [1, 1, 5], state=2)  # 内墙
+        self.add_block([east_x+27, base_y+21, 6], [4, 1, 5], state=2)  # 内墙
+        self.add_block([east_x+5, base_y+9, 6], [1, 9.5, 5], state=2)  # 内墙
 
     def visualize(self):
         print("开始构建地图渲染数据...")
@@ -319,7 +354,7 @@ class VoxelEnvironment:
             elif state == 4: 
                 color = [0.75, 0.75, 0.75] # 地板/天花板：浅灰
             elif state == 5:
-                color = [0.6, 0.2, 0.8]    # 楼梯：蓝色
+                color = [0.6, 0.2, 0.8]    # 楼梯：紫色
             else: 
                 color = [1.0, 1.0, 1.0]
                 
